@@ -1,21 +1,15 @@
 import express from "express";
+import { getLogin, postLogin } from "../controllers/authController.js";
 
-const authRouter = express.Router();
+const router = express.Router();
 
-authRouter.get("/", function(req, res) {
-    res.send("Hello World from Auth!");
-});
 
-authRouter.get('/profile', function(req, res) {
-    res.json({ message: 'This is the profile page' });
-});
+router.get("/login", getLogin);
+router.post("/login", postLogin);
 
-authRouter.get("/login", function(req, res){});
-authRouter.post("/login", function(req, res){});
+router.get("/register", (req, res)=> res.render("auth/register.pug") );
+router.post("/register", function(req, res){});
 
-authRouter.get("/register", function(req, res){});
-authRouter.post("/register", function(req, res){});
+router.get("/logout", function(req, res){});
 
-authRouter.get("/logout", function(req, res){});
-
-export default authRouter;
+export default router;

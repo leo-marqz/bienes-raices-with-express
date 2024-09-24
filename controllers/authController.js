@@ -1,18 +1,26 @@
 
-function getLoing(req, res) {
-  res.render('login');
+function getLogin(req, res) {
+  res.render('auth/login', {
+    isAuthenticated: true
+  });
 }
 
 function postLogin(req, res) {
-    res.send('Login');
+    res.json({
+        message: 'Login successful',
+        statusCode: 200
+    });
 }
 
 function getRegister(req, res) {
-    res.render('register');
+    res.render('auth/register');
 }
 
 function postRegister(req, res) {
-    res.send('Register');
+    res.json({
+        message: 'Registration successful',
+        statusCode: 200
+    });
 }
 
 function getLogout(req, res) {
