@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "css": "postcss public/css/tailwind.css -o public/css/styles.css",
+    "css": "postcss public/css/tailwind.css -o public/css/styles.css --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

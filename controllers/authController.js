@@ -1,7 +1,7 @@
 
 function getLogin(req, res) {
   res.render('auth/login', {
-    isAuthenticated: true
+    page: 'Iniciar Sesion'
   });
 }
 
@@ -13,7 +13,9 @@ function postLogin(req, res) {
 }
 
 function getRegister(req, res) {
-    res.render('auth/register');
+    res.render('auth/register', {
+        page: 'Crear Cuenta'
+    });
 }
 
 function postRegister(req, res) {
