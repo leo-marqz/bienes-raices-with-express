@@ -29,11 +29,18 @@ function getLogout(req, res) {
     res.send('Logout');
 }
 
+function getForgotPassword(req, res) {
+    res.render('auth/forgot-password', {
+        page: 'Recuperar Contraseña'
+    });
+}
+
 export {
     getLogin,
     postLogin,
     getRegister,
     postRegister,
+    getForgotPassword,
     getLogout
 }
 
