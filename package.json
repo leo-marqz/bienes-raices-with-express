@@ -1,0 +1,31 @@
+{
+  "name": "bienes_raices",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bienes raices",
+    "real state",
+    "inmuebles",
+    "express",
+    "nodejs",
+    "pug",
+    "mysql",
+    "tailwind"
+  ],
+  "author": "Leonel Marquez <leomarqz2020@gmail.com>",
+  "license": "ISC",
+  "description": "Proyecto de bienes raices",
+  "dependencies": {
+    "bienes_raices": "file:",
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
