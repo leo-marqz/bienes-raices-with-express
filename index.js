@@ -4,9 +4,13 @@ import database from "./configurations/database.js";
 
 const app = express();
 
+//Enable the use of req.body | form data
+app.use( express.urlencoded({extended: true}) );
+
 //Connect to the database
 try {
     await database.authenticate();
+    await database.sync();
     console.log("Connection has been established successfully.");
 }catch(error){
     console.error("Unable to connect to the database:", error);
