@@ -7,26 +7,37 @@ block content
             span(class='font-normal') Raices
         h2(class='text-center text-2xl font-extrabold')= page
 
+        if errors
+            console.log(errors)
+            div(class=' relative my-5 mt-8 mx-auto max-w-md') 
+                ul
+                    each error in errors
+                        li(class='bg-red-100 border border-red-400 text-red-700 px-1 py-1 mb-1 rounded text-center')= error.msg
+        
+        
+
         div(class='mt-8 mx-auto max-w-md')
             div(class='bg-white py-8 px-4 shadow')
                 form(action="/auth/register", method="POST", class='space-y-5')
                     div
                         label(for='name' class='block text-sm uppercase text-gray-600 mb-2 font-bold') Nombre
                         input(
-                            type="text", 
-                            name='name', 
-                            id='name', 
-                            placeholder='Ingresa tu nombre completo'
-                            class='w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400',
+                            type="text",
+                            name='name',
+                            id='name',
+                            placeholder='Ingresa tu nombre completo',
+                            class='w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400'
+                            value = user ? user.name : ''
                         ) 
                     div
                         label(for='email' class='block text-sm uppercase text-gray-600 mb-2 font-bold') E-mail
                         input(
-                            type="email", 
-                            name='email', 
-                            id='email', 
-                            placeholder='Ingresa tu email'
+                            type="email",
+                            name='email',
+                            id='email',
+                            placeholder='Ingresa tu email',
                             class='w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400',
+                            value= user ? user.email : ''
                         ) 
                     div
                         label(for='password' class='block text-sm uppercase text-gray-600 mb-2 font-bold') Contraseña
@@ -43,7 +54,7 @@ block content
                             type="password", 
                             name='password_confirm', 
                             id='password_confirm', 
-                            placeholder='Repite tu contraseña'
+                            placeholder='Repite tu contraseña',
                             class='w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400',
                         ) 
                     
