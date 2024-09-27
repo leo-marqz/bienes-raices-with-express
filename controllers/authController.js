@@ -61,11 +61,11 @@ async function postRegister(req, res) {
         token: generateId()
     });
 
-    res.json({
-        message: 'Registration successful',
-        statusCode: 200,
-        content: user
+    res.render('templates/message', {
+        page: 'Usuario creado exitosamente!',
+        message: 'Revisa tu email para confirmar tu cuenta',
     });
+    
 }
 
 // ----------------------------
