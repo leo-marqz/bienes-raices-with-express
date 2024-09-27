@@ -1,6 +1,7 @@
 import { check, validationResult } from 'express-validator';
 
 import User from '../models/User.js';
+import { generateId } from '../helpers/tokens.js';
 
 // ------------------------------
 // ----- Register Controller ----
@@ -52,8 +53,14 @@ async function postRegister(req, res) {
         });
     }
 
-    const user = await User.create(req.body);
-    console.log(user);
+    const user = await User.create({
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        confirmed: false,
+        token: generateId()
+    });
+
     res.json({
         message: 'Registration successful',
         statusCode: 200,

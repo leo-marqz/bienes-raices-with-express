@@ -1,5 +1,7 @@
 
 import { DataTypes } from "sequelize";
+import bcrypt from "bcrypt";
+
 import database from "../configurations/database.js";
 
 const User = database.define('users', {
@@ -21,6 +23,13 @@ const User = database.define('users', {
     confirmed: {
         type: DataTypes.BOOLEAN, // TINYINT(1)
         defaultValue: false // DEFAULT 0
+    }
+},{
+    hooks: {
+        beforeCreate: async function(user){
+            const salt = await bcrypt.genSalt(10); // Generate salt
+            user.password = await bcrypt.hash(user.password, salt); // Hash password
+        }
     }
 });
 
