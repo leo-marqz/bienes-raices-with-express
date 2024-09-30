@@ -2,6 +2,7 @@ import { check, validationResult } from 'express-validator';
 
 import User from '../models/User.js';
 import { generateId } from '../helpers/tokens.js';
+import { sendAccountConfirmationEmail } from '../helpers/emails.js';
 
 // ------------------------------
 // ----- Register Controller ----
@@ -9,11 +10,13 @@ import { generateId } from '../helpers/tokens.js';
 
 function getRegister(req, res) {
     res.render('auth/register', {
-        page: 'Crear Cuenta'
+        page: 'Crear Cuenta',
+        csrfToken: req.csrfToken()
     });
 }
 
 async function postRegister(req, res) {
+    console.log(req.body);
     // Validate user input
     await check('name', 'El nombre es requerido').notEmpty().run(req);
     await check('email').isEmail().withMessage('El email es requerido').run(req);
@@ -30,7 +33,8 @@ async function postRegister(req, res) {
             user: {
                 name: req.body.name,
                 email: req.body.email
-            }
+            },
+            csrfToken: req.csrfToken()
         });
     }
 
@@ -43,6 +47,7 @@ async function postRegister(req, res) {
     if(userExists){
         return res.render('auth/register', {
             page: 'Crear Cuenta',
+            csrfToken: req.csrfToken(),
             errors: [{
                 msg: 'El email ya está registrado'
             }],
@@ -61,6 +66,12 @@ async function postRegister(req, res) {
         token: generateId()
     });
 
+    await sendAccountConfirmationEmail({
+        email: user.email,
+        name: user.name,
+        token: user.token
+    });
+
     res.render('templates/message', {
         page: 'Usuario creado exitosamente!',
         message: 'Revisa tu email para confirmar tu cuenta',
@@ -68,13 +79,39 @@ async function postRegister(req, res) {
     
 }
 
-// ----------------------------
-// ----- Login Controller -----
-// ----------------------------
+async function getConfirmAccount(req, res, next) {
+
+    let token = req.params.token;
+
+    const user = await User.findOne({
+        where: {
+            token: token
+        }
+    });
+
+    if(!user){
+        return res.render('auth/confirm-account', {
+            page: 'Error al confirmar cuenta',
+            message: 'El token no es válido',
+            error: true
+        });
+    }
+
+    user.token = null;
+    user.confirmed = true;
+    await user.save();
+
+    return res.render('auth/confirm-account', {
+        page: 'Cuenta confirmada',
+        message: 'Tu cuenta ha sido confirmada exitosamente',
+        error: false
+    });
+}
 
 function getLogin(req, res) {
   res.render('auth/login', {
-    page: 'Iniciar Sesion'
+    page: 'Iniciar Sesion',
+    csrfToken: req.csrfToken()
   });
 }
 
@@ -93,7 +130,8 @@ function getLogout(req, res) {
 
 function getForgotPassword(req, res) {
     res.render('auth/forgot-password', {
-        page: 'Recuperar Contraseña'
+        page: 'Recuperar Contraseña',
+        csrfToken: req.csrfToken()
     });
 }
 
@@ -102,6 +140,7 @@ export {
     postLogin,
     getRegister,
     postRegister,
+    getConfirmAccount,
     getForgotPassword,
     getLogout
 }

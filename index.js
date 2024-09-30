@@ -1,4 +1,7 @@
 import express from "express";
+import csrf from "csurf";
+import cookieParser from "cookie-parser";
+
 import authRouter from "./routes/authRouter.js";
 import database from "./configurations/database.js";
 
@@ -6,6 +9,12 @@ const app = express();
 
 //Enable the use of req.body | form data
 app.use( express.urlencoded({extended: true}) );
+
+//Enable the use of cookies
+app.use( cookieParser() );
+
+//Enable CSRF protection
+app.use( csrf({cookie: true}) );
 
 //Connect to the database
 try {
@@ -26,9 +35,10 @@ app.use(express.static("public"));
 app.get("/", (req, res)=>res.send("Hello World from Express!"));
 app.use("/auth", authRouter);
 
+const port = process.env.APP_PORT_BASE || 3000;
 
-app.listen(3000, function() {
-    console.log("Server is listening on: http://localhost:3000");
+app.listen(port, function() {
+    console.log(`Server running on http://localhost:${port}`);
 });
 
 
