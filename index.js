@@ -18,8 +18,8 @@ app.use( csrf({cookie: true}) );
 
 //Connect to the database
 try {
-    await database.authenticate();
-    await database.sync();
+    await database.authenticate(); //Test the connection
+    await database.sync(); //Create the tables
     console.log("Connection has been established successfully.");
 }catch(error){
     console.error("Unable to connect to the database:", error);

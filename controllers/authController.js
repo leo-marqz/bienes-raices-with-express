@@ -135,6 +135,36 @@ function getForgotPassword(req, res) {
     });
 }
 
+async function postForgotPassword(req, res) {
+    await check('email').isEmail().withMessage('El email es requerido').run(req);
+   
+    let validation = validationResult(req);
+
+    if(!validation.isEmpty()){
+        return res.render('auth/forgot-password', {
+            page: 'Recuperar Contraseña',
+            csrfToken: req.csrfToken(),
+            errors: validation.array()
+        });
+    }
+
+    const user = await User.findOne({
+        where: {
+            email: req.body.email
+        }
+    });
+
+    res.send('Send email to reset password');
+}
+
+function getResetPassword(req, res) {
+    res.send('Reset Password');
+}
+
+function postResetPassword(req, res) {
+    res.send('Reset Password');
+}
+
 export {
     getLogin,
     postLogin,
@@ -142,6 +172,9 @@ export {
     postRegister,
     getConfirmAccount,
     getForgotPassword,
+    postForgotPassword,
+    getResetPassword,
+    postResetPassword,
     getLogout
 }
 
