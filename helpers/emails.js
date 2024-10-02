@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-async function sendAccountConfirmationEmail(info){
+async function sendAccountConfirmationEmail(data){
     const transport = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
         port: process.env.EMAIL_PORT,
@@ -10,7 +10,7 @@ async function sendAccountConfirmationEmail(info){
         }
     });
 
-    const {email, name, token} = info;
+    const {email, name, token} = data;
 
     await transport.sendMail({
         from: 'bienesraices.com',
@@ -42,6 +42,50 @@ async function sendAccountConfirmationEmail(info){
     });
 }
 
+async function sendInstructionsToRecoverPassword(data){
+    const transport = nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT,
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD
+        }
+    });
+
+    const {email, name, token} = data;
+
+    await transport.sendMail({
+        from: 'bienesraices.com',
+        to: email,
+        subject: 'Recupera tu contraseña en bienesraices.com',
+        text: `Hola ${name}, has solicitado restablecer tu contraseña en bienesraices.com.`,
+        html: `
+            <div style="font-family: Arial, sans-serif; text-align: center; color: #333; margin-top:20px;">
+                <h1>Hola ${name},</h1>
+                <p>Has solicitado restablecer tu contraseña en <strong>bienesraices.com</strong>.</p>
+                <p>Puedes cambiar tu contraseña haciendo clic en el siguiente botón:</p>
+                <a href="${process.env.APP_URL_BASE}:${process.env.APP_PORT_BASE ?? 3000}/auth/reset-password/${token}" 
+                style="
+                    display: inline-block;
+                    padding: 15px 25px;
+                    margin: 20px 0;
+                    font-size: 16px;
+                    color: #ffffff;
+                    background-color: #28a745;
+                    text-decoration: none;
+                    border-radius: 5px;
+                ">
+                Cambiar Contraseña
+                </a>
+                <p style="color: #777;">Si no solicitaste este cambio, puedes ignorar este correo.</p>
+                <p>Saludos,<br/>El equipo de bienesraices.com</p>
+            </div>
+        `
+    });
+
+}
+
 export {
-    sendAccountConfirmationEmail
+    sendAccountConfirmationEmail,
+    sendInstructionsToRecoverPassword
 }

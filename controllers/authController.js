@@ -2,7 +2,7 @@ import { check, validationResult } from 'express-validator';
 
 import User from '../models/User.js';
 import { generateId } from '../helpers/tokens.js';
-import { sendAccountConfirmationEmail } from '../helpers/emails.js';
+import { sendAccountConfirmationEmail, sendInstructionsToRecoverPassword } from '../helpers/emails.js';
 
 // ------------------------------
 // ----- Register Controller ----
@@ -154,11 +154,55 @@ async function postForgotPassword(req, res) {
         }
     });
 
-    res.send('Send email to reset password');
+    if(!user){
+        return res.render('auth/forgot-password', {
+            page: 'Recuperar Contraseña',
+            csrfToken: req.csrfToken(),
+            errors: [{
+                msg: 'El email no está registrado'
+            }]
+        });
+    }
+
+    user.token = generateId();
+    await user.save();
+
+    // Send email to user
+    await sendInstructionsToRecoverPassword({
+        email: user.email,
+        name: user.name,
+        token: user.token
+    });
+
+    // Redirect to message page
+    res.render('templates/message', {
+        page: 'Email enviado',
+        message: 'Revisa tu email para restablecer tu contraseña'
+    });
 }
 
-function getResetPassword(req, res) {
-    res.send('Reset Password');
+async function getResetPassword(req, res) {
+
+    let token = req.params.token;
+
+    const user = await User.findOne({
+        where: {
+            token: token
+        }
+    });
+
+    if(!user){
+        return res.render('auth/confirm-account', {
+            page: 'Error al restablecer contraseña',
+            message: 'El token no es válido',
+            error: true
+        })
+    }
+
+    return res.render('auth/reset-password', {
+        page: 'Restablecer Contraseña',
+        csrfToken: req.csrfToken()
+    });
 }
 
 function postResetPassword(req, res) {

@@ -4,20 +4,20 @@ import { getLogin, getRegister, postLogin, postRegister, getForgotPassword, getL
 const router = express.Router();
 
 
-router.get("/login", getLogin);
-router.post("/login", postLogin);
+router.get("/login", getLogin); //form to login
+router.post("/login", postLogin); //login
 
-router.get("/register", getRegister);
-router.post("/register", postRegister);
+router.get("/register", getRegister); //form to register
+router.post("/register", postRegister); //register
 
-router.get("/forgot-password", getForgotPassword);
-router.post("/forgot-password", postForgotPassword);
+router.get("/forgot-password", getForgotPassword); //form to request password reset
+router.post("/forgot-password", postForgotPassword); //send email with instructions to reset password
 
-router.get('/get-reset-password/:token', getResetPassword);
-router.post('/reset-password/:token', postResetPassword);
+router.get('/reset-password/:token', getResetPassword); //form to reset password
+router.post('/reset-password/:token', postResetPassword); //reset password
 
-router.get('/confirm-account/:token', getConfirmAccount);
+router.get('/confirm-account/:token', getConfirmAccount); //confirm account
 
-router.get("/logout", getLogout);
+router.get("/logout", getLogout); //logout
 
 export default router;
