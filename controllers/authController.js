@@ -12,6 +12,7 @@ import { sendAccountConfirmationEmail, sendInstructionsToRecoverPassword } from 
 function getRegister(req, res) {
     res.render('auth/register', {
         page: 'Crear Cuenta',
+        navbar: false,
         csrfToken: req.csrfToken()
     });
 }
@@ -30,6 +31,7 @@ async function postRegister(req, res) {
         console.log(validation.array());
         return res.render('auth/register', {
             page: 'Crear Cuenta',
+            navbar: false,
             errors: validation.array(),
             user: {
                 name: req.body.name,
@@ -48,6 +50,7 @@ async function postRegister(req, res) {
     if(userExists){
         return res.render('auth/register', {
             page: 'Crear Cuenta',
+            navbar: false,
             csrfToken: req.csrfToken(),
             errors: [{
                 msg: 'El email ya está registrado'
@@ -75,6 +78,7 @@ async function postRegister(req, res) {
 
     res.render('templates/message', {
         page: 'Usuario creado exitosamente!',
+        navbar: false,
         message: 'Revisa tu email para confirmar tu cuenta',
     });
     
@@ -93,6 +97,7 @@ async function getConfirmAccount(req, res, next) {
     if(!user){
         return res.render('auth/confirm-account', {
             page: 'Error al confirmar cuenta',
+            navbar: false,
             message: 'El token no es válido',
             error: true
         });
@@ -104,6 +109,7 @@ async function getConfirmAccount(req, res, next) {
 
     return res.render('auth/confirm-account', {
         page: 'Cuenta confirmada',
+        navbar: false,
         message: 'Tu cuenta ha sido confirmada exitosamente',
         error: false
     });
@@ -112,6 +118,7 @@ async function getConfirmAccount(req, res, next) {
 function getLogin(req, res) {
   res.render('auth/login', {
     page: 'Iniciar Sesion',
+    navbar: false,
     csrfToken: req.csrfToken()
   });
 }
@@ -125,6 +132,7 @@ async function postLogin(req, res) {
     if(!validation.isEmpty()){
         return res.render('auth/login', {
             page: 'Iniciar Sesion',
+            navbar: false,
             csrfToken: req.csrfToken(),
             errors: validation.array()
         });
@@ -138,6 +146,7 @@ async function postLogin(req, res) {
     if(!user){
         return res.render('auth/login', {
             page: 'Iniciar Sesion',
+            navbar: false,
             csrfToken: req.csrfToken(),
             errors: [{
                 msg: 'El usuario no existe!!'
@@ -148,6 +157,7 @@ async function postLogin(req, res) {
     if(!user.confirmed){
         return res.render('auth/login', {
             page: 'Iniciar Sesion',
+            navbar: false,
             csrfToken: req.csrfToken(),
             errors: [{
                 msg: 'La cuenta no ha sido confirmada'
@@ -161,6 +171,7 @@ async function postLogin(req, res) {
     if( !validPassword ){
         return res.render('auth/login', {
             page: 'Iniciar Sesion',
+            navbar: false,
             csrfToken: req.csrfToken(),
             errors: [{
                 msg: 'Las credenciales no son válidas'
@@ -182,12 +193,13 @@ async function postLogin(req, res) {
 
 
 function getLogout(req, res) {
-    res.send('Logout');
+    res.redirect('/auth/login');
 }
 
 function getForgotPassword(req, res) {
     res.render('auth/forgot-password', {
         page: 'Recuperar Contraseña',
+        navbar: false,
         csrfToken: req.csrfToken()
     });
 }
@@ -200,6 +212,7 @@ async function postForgotPassword(req, res) {
     if(!validation.isEmpty()){
         return res.render('auth/forgot-password', {
             page: 'Recuperar Contraseña',
+            navbar: false,
             csrfToken: req.csrfToken(),
             errors: validation.array()
         });
@@ -214,6 +227,7 @@ async function postForgotPassword(req, res) {
     if(!user){
         return res.render('auth/forgot-password', {
             page: 'Recuperar Contraseña',
+            navbar: false,
             csrfToken: req.csrfToken(),
             errors: [{
                 msg: 'El email no está registrado'
@@ -234,6 +248,7 @@ async function postForgotPassword(req, res) {
     // Redirect to message page
     res.render('templates/message', {
         page: 'Email enviado',
+        navbar: false,
         message: 'Revisa tu email para restablecer tu contraseña'
     });
 }
@@ -251,6 +266,7 @@ async function getResetPassword(req, res) {
     if(!user){
         return res.render('auth/confirm-account', {
             page: 'Error al restablecer contraseña',
+            navbar: false,
             message: 'El token no es válido',
             error: true
         })
@@ -259,6 +275,7 @@ async function getResetPassword(req, res) {
     // Render the reset password form
     return res.render('auth/reset-password', {
         page: 'Restablecer Contraseña',
+        navbar: false,
         csrfToken: req.csrfToken()
     });
 }
@@ -272,6 +289,7 @@ async function postResetPassword(req, res) {
     if(!validation.isEmpty()){
         return res.render('auth/reset-password', {
             page: 'Restablecer Contraseña',
+            navbar: false,
             csrfToken: req.csrfToken(),
             errors: validation.array()
         });
@@ -289,6 +307,7 @@ async function postResetPassword(req, res) {
     if(!user){
         return res.render('auth/confirm-account', {
             page: 'Error al restablecer contraseña',
+            navbar: false,
             message: 'El token no es válido',
             error: true
         })
@@ -303,6 +322,7 @@ async function postResetPassword(req, res) {
 
     return res.render('templates/message', {
         page: 'Contraseña restablecida',
+        navbar: false,
         message: 'Tu contraseña ha sido restablecida exitosamente'
     });
 }
