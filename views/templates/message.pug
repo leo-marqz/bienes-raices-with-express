@@ -8,4 +8,10 @@ block content
         h2(class='text-center text-2xl font-extrabold')= page
         
         p(class='relative mx-auto max-w-md bg-gray-300 border border-gray-500 text-gray-700 py-5 mt-5 text-center font-extrabold rounded')= message
+
+        if !error 
+            a(
+                href='/auth/login' 
+                class='text-center font-bold text-sm text-slate-600 mt-10 block '
+            ) < Ir hacia inicio de sesión
         

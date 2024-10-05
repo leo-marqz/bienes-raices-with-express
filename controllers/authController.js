@@ -2,7 +2,7 @@ import { check, validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 
 import User from '../models/User.js';
-import { generateId } from '../helpers/tokens.js';
+import { generateId, jwtgen } from '../helpers/tokens.js';
 import { sendAccountConfirmationEmail, sendInstructionsToRecoverPassword } from '../helpers/emails.js';
 
 // ------------------------------
@@ -116,13 +116,69 @@ function getLogin(req, res) {
   });
 }
 
-function postLogin(req, res) {
-    res.json({
-        message: 'Login successful',
-        statusCode: 200
-    });
-}
+async function postLogin(req, res) {
+    await check('email').isEmail().withMessage('El email es requerido').run(req);
+    await check('password').notEmpty().withMessage('La contraseña es requerida').run(req);
 
+    let validation = validationResult(req);
+
+    if(!validation.isEmpty()){
+        return res.render('auth/login', {
+            page: 'Iniciar Sesion',
+            csrfToken: req.csrfToken(),
+            errors: validation.array()
+        });
+    }
+
+    // Check if the user exists
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ where: { email: email } });
+    
+    if(!user){
+        return res.render('auth/login', {
+            page: 'Iniciar Sesion',
+            csrfToken: req.csrfToken(),
+            errors: [{
+                msg: 'El usuario no existe!!'
+            }]
+        });
+    }
+
+    if(!user.confirmed){
+        return res.render('auth/login', {
+            page: 'Iniciar Sesion',
+            csrfToken: req.csrfToken(),
+            errors: [{
+                msg: 'La cuenta no ha sido confirmada'
+            }]
+        });
+    }
+
+    // Check if the password is correct
+    const validPassword = await bcrypt.compare(password, user.password);
+
+    if( !validPassword ){
+        return res.render('auth/login', {
+            page: 'Iniciar Sesion',
+            csrfToken: req.csrfToken(),
+            errors: [{
+                msg: 'Las credenciales no son válidas'
+            }]
+        });
+    }
+
+    const token = jwtgen({
+        id: user.id,
+        name: user.name
+    });
+
+    return res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.APP_ENV === 'production',
+        // sameSite: 'strict' 
+    }).redirect('/see-my-properties');
+}
 
 
 function getLogout(req, res) {
