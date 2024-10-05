@@ -1,4 +1,5 @@
 import { check, validationResult } from 'express-validator';
+import bcrypt from 'bcrypt';
 
 import User from '../models/User.js';
 import { generateId } from '../helpers/tokens.js';
@@ -199,14 +200,55 @@ async function getResetPassword(req, res) {
         })
     }
 
+    // Render the reset password form
     return res.render('auth/reset-password', {
         page: 'Restablecer Contraseña',
         csrfToken: req.csrfToken()
     });
 }
 
-function postResetPassword(req, res) {
-    res.send('Reset Password');
+async function postResetPassword(req, res) {
+    await check('password').isStrongPassword().withMessage('La contraseña no es fuerte').run(req);
+    await check('password_confirm').equals(req.body.password).withMessage('Las contraseñas no coinciden').run(req);
+
+    let validation = validationResult(req);
+
+    if(!validation.isEmpty()){
+        return res.render('auth/reset-password', {
+            page: 'Restablecer Contraseña',
+            csrfToken: req.csrfToken(),
+            errors: validation.array()
+        });
+    }
+
+    const { token } = req.params;
+
+    // Get the user by token
+    const user = await User.findOne({
+        where: {
+            token: token
+        }
+    });
+
+    if(!user){
+        return res.render('auth/confirm-account', {
+            page: 'Error al restablecer contraseña',
+            message: 'El token no es válido',
+            error: true
+        })
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const { password } = req.body;
+    user.password = await bcrypt.hash(password, salt);
+    user.token = null;
+
+    await user.save();
+
+    return res.render('templates/message', {
+        page: 'Contraseña restablecida',
+        message: 'Tu contraseña ha sido restablecida exitosamente'
+    });
 }
 
 export {
