@@ -9,7 +9,8 @@
     "css": "postcss public/css/tailwind.css -o public/css/styles.css --watch",
     "js": "webpack --watch",
     "dev": "concurrently \"npm run css\" \"npm run js\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "db:import": "node seed/seeder.js -i ",
+    "db:destroy": "node seed/seeder.js -d"
   },
   "keywords": [
     "bienes raices",
