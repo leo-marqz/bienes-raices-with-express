@@ -10,7 +10,8 @@
     "js": "webpack --watch",
     "dev": "concurrently \"npm run css\" \"npm run js\"",
     "db:import": "node seed/seeder.js -i ",
-    "db:destroy": "node seed/seeder.js -d"
+    "db:destroy": "node seed/seeder.js -d",
+    "db:clear": "node seed/seeder.js -c"
   },
   "keywords": [
     "bienes raices",

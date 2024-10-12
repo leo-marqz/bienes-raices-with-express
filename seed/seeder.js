@@ -51,10 +51,27 @@ const destroyDataAsync = async () => {
     }
 }
 
+const clearDatabaseAsync = async ()=>{
+    try{
+        await database.authenticate();
+        await database.sync({force: true});
+        console.log('Database cleared! ------------------------------------');
+        process.exit();
+
+    }catch(error){
+        console.error(`Error: ${error.message}`);
+        process.exit(1);
+    }
+}
+
 if(process.argv[2] === '-i'){
     importDataAsync(); //
 }
 
 if(process.argv[2] === '-d'){
     destroyDataAsync();
+}
+
+if(process.argv[2] === '-c'){
+    clearDatabaseAsync();
 }
