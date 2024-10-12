@@ -27,14 +27,13 @@
 
         // get information from street and city
         geocoderService.reverse().latlng(position, 14).run( function(error, result){
-            console.log(result);
             marker.bindPopup( result.address.Match_addr ).openPopup();
 
             document.querySelector('.street').textContent = result?.address?.Address ?? '';
 
             document.querySelector('#street').value = result?.address?.Address ?? '';
-            document.querySelector('#lat').value = result?.latlng.lat ?? '';
-            document.querySelector('#lng').value = result?.latlng.lng ?? '';
+            document.querySelector('#latitude').value = result?.latlng.lat ?? '';
+            document.querySelector('#longitude').value = result?.latlng.lng ?? '';
         } );
     });
 

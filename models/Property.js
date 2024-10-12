@@ -10,7 +10,7 @@ const Property = database.define('properties', {
         primaryKey: true,
     },
     title: {
-        type: DataTypes.STRIN(100),
+        type: DataTypes.STRING(100),
         allowNull: false
     },
     description: {

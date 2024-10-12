@@ -33,7 +33,7 @@ app.set("views", "./views");
 
 //Enable static files (css, js, images) to be served from the public folder
 app.use(express.static("public"));
-
+ 
 app.use('/', propertyRouter);
 app.use("/auth", authRouter);
 

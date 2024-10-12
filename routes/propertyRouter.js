@@ -8,10 +8,10 @@ import express from "express";
 const router = express.Router();
 
 router.get('/', getSeeMyProperties);
-router.get('/see-my-properties', getSeeMyProperties);
+router.get('/my-properties', getSeeMyProperties);
 
 router.get('/properties/create', getCreateProperty);
-router.post('properties/create', postCreateProperty);
+router.post('/properties/create', postCreateProperty);
 
 
 export default router;
