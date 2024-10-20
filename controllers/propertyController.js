@@ -1,6 +1,6 @@
 import { check, validationResult } from 'express-validator';
 
-import { Category, Price } from '../models/index.js';
+import { Category, Price, Property } from '../models/index.js';
 
 function getSeeMyProperties(req, res) {
     res.render('property/admin', {
@@ -42,7 +42,7 @@ async function postCreateProperty(req, res) {
     await check('street').notEmpty().withMessage('La dirección es requerida').run(req);
     await check('latitude').notEmpty().withMessage('La latitud es requerida').run(req);
     await check('longitude').notEmpty().withMessage('La longitud es requerida').run(req);
-    await check('image').notEmpty().withMessage('La imagen es requerida').run(req);
+    // await check('image').notEmpty().withMessage('La imagen es requerida').run(req);
 
     const errors = validationResult(req);
 
@@ -61,6 +61,24 @@ async function postCreateProperty(req, res) {
             errors: errors.array(),
             data: req.body
         });
+    }
+
+    const {title, description, category: category_id, price: price_id, rooms, parking, wc, street, latitude, longitude} = req.body;
+    try{
+        const property = await Property.create({
+            title,
+            description,
+            category_id,
+            price_id,
+            rooms,
+            parking,
+            wc,
+            street,
+            latitude,
+            longitude
+        })
+    }catch(error){
+        console.error(error);
     }
 
     console.log(req.body);

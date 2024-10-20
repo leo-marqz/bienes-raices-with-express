@@ -31,7 +31,7 @@
 
             document.querySelector('.street').textContent = result?.address?.Address ?? '';
 
-            document.querySelector('#street').value = result?.address?.Address ?? '';
+            document.querySelector('#street').value = result?.address?.Address ?? '---';
             document.querySelector('#latitude').value = result?.latlng.lat ?? '';
             document.querySelector('#longitude').value = result?.latlng.lng ?? '';
         } );
