@@ -22,7 +22,8 @@ async function getCreateProperty(req, res) {
         navbar: true,
         csrfToken: req.csrfToken(),
         categories,
-        prices
+        prices,
+        data: {}
     });
 }
 
@@ -57,7 +58,8 @@ async function postCreateProperty(req, res) {
             csrfToken: req.csrfToken(),
             categories,
             prices,
-            errors: errors.array()
+            errors: errors.array(),
+            data: req.body
         });
     }
 

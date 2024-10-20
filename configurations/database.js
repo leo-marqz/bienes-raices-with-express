@@ -2,7 +2,7 @@ import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 
 //leomarqz
-dotenv.config({
+dotenv.config({ 
     path: '.env'
 });
 
