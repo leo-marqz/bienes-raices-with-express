@@ -63,7 +63,9 @@ async function postCreateProperty(req, res) {
         });
     }
 
+    const {id: user_id} = req.user;
     const {title, description, category: category_id, price: price_id, rooms, parking, wc, street, latitude, longitude} = req.body;
+
     try{
         const property = await Property.create({
             title,
@@ -75,14 +77,18 @@ async function postCreateProperty(req, res) {
             wc,
             street,
             latitude,
-            longitude
-        })
+            longitude,
+            user_id,
+            image: ''
+        });
+
+        const {id} = property;
+
+        return res.redirect(`/properties/add-image/${id}`);
+
     }catch(error){
         console.error(error);
     }
-
-    console.log(req.body);
-    res.send('Recibido');
 }
 
 export {
