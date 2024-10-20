@@ -30,6 +30,11 @@ const User = database.define('users', {
             const salt = await bcrypt.genSalt(10); // Generate salt
             user.password = await bcrypt.hash(user.password, salt); // Hash password
         }
+    },
+    scopes: { // Query scopes
+        excludeSensitiveUserInformation: {  // Scope name
+            attributes: { exclude: ['password', 'token', 'confirmed', 'createdAt', 'updatedAt'] }
+        }
     }
 });
 

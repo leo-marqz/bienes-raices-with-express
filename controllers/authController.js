@@ -184,11 +184,11 @@ async function postLogin(req, res) {
         name: user.name
     });
 
-    return res.cookie('token', token, {
+    return res.cookie('_token', token, {
         httpOnly: true,
         secure: process.env.APP_ENV === 'production',
         // sameSite: 'strict' 
-    }).redirect('/see-my-properties');
+    }).redirect('/');
 }
 
 

@@ -4,14 +4,15 @@ import {
 } from "../controllers/propertyController.js";
 
 import express from "express";
+import protectPrivateRoutesMiddleware from "../middlewares/protectPrivateRoutes.js";
 
 const router = express.Router();
 
-router.get('/', getSeeMyProperties);
-router.get('/my-properties', getSeeMyProperties);
+router.get('/', protectPrivateRoutesMiddleware, getSeeMyProperties);
+router.get('/my-properties', protectPrivateRoutesMiddleware, getSeeMyProperties);
 
-router.get('/properties/create', getCreateProperty);
-router.post('/properties/create', postCreateProperty);
+router.get('/properties/create', protectPrivateRoutesMiddleware, getCreateProperty);
+router.post('/properties/create', protectPrivateRoutesMiddleware,  postCreateProperty);
 
 
 export default router;

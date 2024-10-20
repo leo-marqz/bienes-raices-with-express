@@ -1,11 +1,11 @@
 
 import categories from "./seedCategory.js";
 import prices from "./seedPrice.js";
+import users from "./seedUser.js";
 
 import database from "../configurations/database.js";
 
-import Category from "../models/Category.js";
-import Price from "../models/Price.js";
+import { Category, Price, User } from "../models/index.js";
 
 const importDataAsync = async () => {
     try{
@@ -21,7 +21,8 @@ const importDataAsync = async () => {
         // await Price.bulkCreate(prices);
         await Promise.all([
             Category.bulkCreate(categories),
-            Price.bulkCreate(prices)
+            Price.bulkCreate(prices),
+            User.bulkCreate(users)
         ]);
 
         console.log('Data imported! ------------------------------------');
