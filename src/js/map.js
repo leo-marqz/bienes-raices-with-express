@@ -1,8 +1,8 @@
 (function() {
     // @13.6809339,-89.2685604,19.25z?entry=ttu&
     //@13.7015116,-89.2241931,19z
-    const lat = 13.7015116;
-    const lng = -89.2241931;
+    const lat = document.querySelector('#latitude').value || 13.7015116;
+    const lng = document.querySelector('#longitude').value || -89.2241931;
     const maps = L.map('maps').setView([lat, lng ], 14);
 
     let marker;

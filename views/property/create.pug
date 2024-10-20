@@ -112,11 +112,11 @@ block content
                         div(id='maps' class='h-72')
 
                         div(class='')
-                            p( class='street')
+                            p( class='street')= data.street ? data.street : ''
 
-                            input(type='hidden', name='street', id='street')
-                            input(type='hidden', name='latitude', id='latitude')
-                            input(type='hidden', name='longitude', id='longitude')
+                            input(type='hidden' name='street' id='street' value= data.street ? data.street : '')
+                            input(type='hidden' name='latitude' id='latitude' value= data.latitude ? data.latitude : '')
+                            input(type='hidden' name='longitude' id='longitude' value= data.longitude ? data.longitude : '')
                     
                     input(
                         type='submit', 
