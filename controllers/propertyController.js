@@ -37,6 +37,7 @@ async function postCreateProperty(req, res) {
     await check('rooms').notEmpty().withMessage('El número de habitaciones es requerido').run(req);
     await check('parking').notEmpty().withMessage('El número de parqueos es requerido').run(req);
     await check('wc').notEmpty().withMessage('El número de baños es requerido').run(req);
+    
     await check('street').notEmpty().withMessage('La dirección es requerida').run(req);
     await check('latitude').notEmpty().withMessage('La latitud es requerida').run(req);
     await check('longitude').notEmpty().withMessage('La longitud es requerida').run(req);
