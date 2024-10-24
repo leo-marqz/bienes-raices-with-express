@@ -5,7 +5,6 @@ import { Category, Price, Property } from '../models/index.js';
 function getSeeMyProperties(req, res) {
     res.render('property/admin', {
         page: 'Mis Propiedades',
-        navbar: true
     });
 }
 
@@ -19,7 +18,6 @@ async function getCreateProperty(req, res) {
 
     res.render('property/create', {
         page: 'Crear Propiedad',
-        navbar: true,
         csrfToken: req.csrfToken(),
         categories,
         prices,
@@ -54,7 +52,6 @@ async function postCreateProperty(req, res) {
 
         return res.render('property/create', {
             page: 'Crear Propiedad',
-            navbar: true,
             csrfToken: req.csrfToken(),
             categories,
             prices,
@@ -91,8 +88,16 @@ async function postCreateProperty(req, res) {
     }
 }
 
+async function getAddImage(req, res) {
+    return res.render('property/add-image', {
+        page: 'Agregar Imagen',
+        csrfToken: req.csrfToken()
+    })
+}
+
 export {
     getSeeMyProperties,
     getCreateProperty,
-    postCreateProperty
+    postCreateProperty,
+    getAddImage
 }
