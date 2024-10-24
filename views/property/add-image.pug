@@ -13,7 +13,7 @@ block content
 
 
         div(class='bg-white shadow py-8 px-4 rounded mx-auto max-w-4xl my-10 md:px-10')
-            form(action='/properties/create' method='POST' class='dropzone border-dashed border-2 w-full min:h-96')
+            form(id='image' action=`/properties/add-image/${property.id}` method='POST' class='dropzone border-dashed border-2 w-full min:h-96')
                     input(type='hidden', name='_csrf', value=csrfToken)
                     
             input(

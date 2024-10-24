@@ -1,6 +1,7 @@
 import express from "express";
 import csrf from "csurf";
 import cookieParser from "cookie-parser";
+import colors from "picocolors";
 
 import authRouter from "./routes/authRouter.js";
 import propertyRouter from './routes/propertyRouter.js';
@@ -40,7 +41,7 @@ app.use("/auth", authRouter);
 const port = process.env.APP_PORT_BASE || 3000;
 
 app.listen(port, function() {
-    console.log(`Server running on http://localhost:${port}`);
+    console.log(`\n${colors.green('[SUCCESS]:')} Server running on: ${colors.cyanBright(`http://localhost:${port}`)}\n`);
 });
 
 

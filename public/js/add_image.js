@@ -26,7 +26,7 @@ eval("(function webpackUniversalModuleDefinition(root, factory) {\n\tif(true)\n\
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var dropzone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dropzone */ \"./node_modules/dropzone/dist/dropzone.js\");\n\n\n\n//# sourceURL=webpack://bienes_raices/./src/js/add_image.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var dropzone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dropzone */ \"./node_modules/dropzone/dist/dropzone.js\");\n\n\n\n// Configuración de Dropzone\ndropzone__WEBPACK_IMPORTED_MODULE_0__.Dropzone.options.image = {\n    dictDefaultMessage: 'Arrastra aquí las imágenes',\n    acceptedFiles: '.png,.jpg,.jpeg',\n    maxFilesize: 5, // MB\n    maxFiles: 1,\n    parallelUploads: 1,\n    autoProcessQueue: false,\n    addRemoveLinks: true,\n    dictRemoveFile: 'Eliminar archivo',\n    dictMaxFilesExceeded: 'Solo puedes subir una imagen',\n    dictFileTooBig: 'La imagen es muy pesada (max 5MB)',\n}\n\n//# sourceURL=webpack://bienes_raices/./src/js/add_image.js?");
 
 /***/ })
 

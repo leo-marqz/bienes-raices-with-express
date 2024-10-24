@@ -1,3 +1,4 @@
+import colors from 'picocolors';
 import { check, validationResult } from 'express-validator';
 
 import { Category, Price, Property } from '../models/index.js';
@@ -89,15 +90,44 @@ async function postCreateProperty(req, res) {
 }
 
 async function getAddImage(req, res) {
+    const {id} = req.params;
+    const property = await Property.findByPk(id);
+
+    //validate if the property exists
+    if(!property){
+        console.error( colors.red('[DANGER]: La propiedad no existe') );
+        return res.redirect('/');
+    }
+
+    //validate if the property is published
+    if(property.published){
+        console.error( colors.yellow('[DANGER]: La propiedad ya ha sido publicada') );
+        return res.redirect('/');
+    }
+
+    //validate if the property belongs to the user
+    if(property.user_id.toString() !== req.user.id.toString()){
+        console.error( colors.red('[DANGER]:La propiedad no pertenece al usuario') );
+        return res.redirect('/');
+    }
+
+    console.log( colors.green('[SUCCESS]: La propiedad es válida') );
+
     return res.render('property/add-image', {
-        page: 'Agregar Imagen',
-        csrfToken: req.csrfToken()
+        page: 'Agregar Imagen: ' + property.title,
+        csrfToken: req.csrfToken(),
+        property
     })
+}
+
+async function postAddImage(req, res) {
+    return res.send('postAddImage');
 }
 
 export {
     getSeeMyProperties,
     getCreateProperty,
     postCreateProperty,
-    getAddImage
+    getAddImage,
+    postAddImage
 }
