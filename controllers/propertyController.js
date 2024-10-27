@@ -120,7 +120,7 @@ async function getAddImage(req, res) {
     })
 }
 
-async function postAddImage(req, res) {
+async function postAddImage(req, res, next) {
     const {id} = req.params;
     const property = await Property.findByPk(id);
 
@@ -143,7 +143,19 @@ async function postAddImage(req, res) {
     }
 
     console.log( colors.green('[SUCCESS]: La propiedad es válida') );
-    
+
+    try{
+
+        property.image = req.file.filename;
+        property.published = 1;
+        await property.save();
+
+        next(); //continue with the next middleware
+
+    }catch(error){
+        console.error( colors.red('[DANGER]: Error al subir la imagen: ' + error) );
+    }
+
     return res.send( colors.green('[SUCCESS]: Imagen subida') );
 }
 

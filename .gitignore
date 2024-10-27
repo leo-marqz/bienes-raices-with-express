@@ -28,3 +28,7 @@ Thumbs.db
 # Coverage directories
 coverage/
 nyc_output/
+
+#others
+dist/
+public/uploads/

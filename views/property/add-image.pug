@@ -14,14 +14,14 @@ block content
 
 
         div(class='bg-white shadow py-8 px-4 rounded mx-auto max-w-4xl my-10 md:px-10')
-            form(id='image' action=`/properties/add-image/${property.id}` method='POST' class='dropzone border-dashed border-2 w-full min:h-96')
+            form(id='image' action=`/properties/add-image/${property.id}` method='post' class='dropzone border-dashed border-2 w-full min:h-96')
                     input(type='hidden', name='_csrf', value=csrfToken)
                     
-            input(
-                type='submit', 
-                value='Publicar Propiedad', 
+            button(
+                type='button'
+                id='publish'
                 class='mt-5 w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded-md cursor-pointer',
-            )
+            ) Publicar Propiedad
 
 
 block scripts 

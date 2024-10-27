@@ -22,4 +22,18 @@ Dropzone.options.image = {
         'X-CSRF-TOKEN': csrftoken 
     },
     paramName: 'image', 
+    init: function(){
+        const dropzone = this;
+        const btnPublish = document.querySelector('#publish');
+
+        btnPublish.addEventListener('click', function(){
+            dropzone.processQueue();
+        });
+
+        dropzone.on('queuecomplete', function(file, errorMessage){
+            if(dropzone.getActiveFiles().length === 0){
+                window.location.href = '/';
+            }
+        });
+    }
 }
