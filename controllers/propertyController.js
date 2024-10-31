@@ -3,9 +3,21 @@ import { check, validationResult } from 'express-validator';
 
 import { Category, Price, Property } from '../models/index.js';
 
-function getSeeMyProperties(req, res) {
+async function getSeeMyProperties(req, res) {
+
+    const { id } = req.user;
+
+    const properties = await Property.findAll({ where: { 
+            user_id: id
+        },
+        include: [
+            {model: Category},
+            {model: Price}
+        ]});
+
     res.render('property/admin', {
         page: 'Mis Propiedades',
+        properties
     });
 }
 

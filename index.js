@@ -23,9 +23,9 @@ app.use( csrf({cookie: true}) );
 try {
     await database.authenticate(); //Test the connection
     await database.sync(); //Create the tables
-    console.log("Connection has been established successfully.");
+    console.log( colors.green("[SUCCESS]: Database connection has been established successfully.") );
 }catch(error){
-    console.error("Unable to connect to the database:", error);
+    console.error( colors.red("[ERROR]: Unable to connect to the database:"), error );
 }
 
 //Enable pug as the view engine
