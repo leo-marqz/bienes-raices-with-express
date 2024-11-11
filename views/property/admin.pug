@@ -17,16 +17,42 @@ block content
                 ul(class='divide-y divide-gray-200')
                     each property in properties
                         li(class='p-4')
-                            div(class='flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-8 gap-4')
+                            div(class='flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-8 md:space-y-0 gap-4')
                                 div(class='sm:w-1/4 md:w-1/6') 
                                     img(src=`uploads/images/${property.image}`, alt=`Imagen de Propiedad - ${property.title}`  class='w-full block')
                                 div(class='sm:w-2/4 md:w-3/6 lg:w-4/6')
                                     a(href='#' class='block text-2xl font-extrabold text-gray-600 truncate')= property.title
-                                    p(class='text-sm text-black font-bold')= property.category.name
+                                    p(class='mt-2')
+                                        span(class='text-sm text-black font-bold') Categoria: 
+                                        span= property.category.name
 
-                                div(class='sm:w-1/4 md:w-2/6 lg:w-1/6') 
-                                    a(class='bg-red-600') Eliminar
-                                
+                                    p 
+                                        span(class='text-sm text-black font-bold') Precio: 
+                                        span= property.price.name
+
+                                    p 
+                                        span(class='text-sm text-black font-bold') Descripción: 
+                                        span= property.description
+
+                                div(class='sm:w-1/4 md:w-2/6 lg:w-1/6 flex flex-col lg:flex-row lg:flex-1 gap-2') 
+                                    form(action='#')
+                                        input(
+                                            type='submit' 
+                                            class=`w-full px-2 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer ${property.published ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-400'}` 
+                                            value=`${property.published ? 'Publicado' : 'No Publicado'}`
+                                            )
+                                        
+                                    a(
+                                        href='#'
+                                        class='text-center px-2 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer bg-indigo-100 text-indigo-800'
+                                    ) Editar
+
+                                    form(action='#')
+                                        input(
+                                            type='submit' 
+                                            class=`w-full px-2 py-2 md:py-1 text-xs leading-5 font-semibold rounded cursor-pointer bg-red-100 text-red-800` 
+                                            value='Eliminar'
+                                            )
                                
         else 
             p No hay propiedades
