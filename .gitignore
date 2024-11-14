@@ -31,4 +31,4 @@ nyc_output/
 
 #others
 dist/
-public/uploads/
+public/uploads/images/

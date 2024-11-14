@@ -5,6 +5,7 @@ const users = [
         name: 'Leonel Marquez',
         email: 'leomarqz2020@gmail.com',
         password: bcrypt.hashSync('$ABClm123', 10),
+        confirmed: 1
     },
     {
         name: 'Karla Hernandez',
