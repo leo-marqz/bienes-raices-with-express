@@ -167,14 +167,121 @@ async function postAddImage(req, res, next) {
     }catch(error){
         console.error( colors.red('[DANGER]: Error al subir la imagen: ' + error) );
     }
-
-    return res.send( colors.green('[SUCCESS]: Imagen subida') );
+    console.log( colors.green('[SUCCESS]: Imagen subida') );
+    
+    res.redirect('/my-properties');
 }
+
+async function getEditProperty(req, res){
+    const { id } = req.params;
+
+    const property = await Property.findByPk(id);
+
+    if(!property){
+        console.error( colors.red('[DANGER]: La propiedad no existe') );
+        return res.redirect('/');
+    }
+
+    if(property.user_id.toString() !== req.user.id.toString()){
+        console.error( colors.red('[DANGER]: La propiedad no pertenece al usuario') );
+        return res.redirect('/');
+    }
+
+    const [categories, prices] = await Promise.all([
+        Category.findAll(),
+        Price.findAll()
+    ]);
+
+    res.render('property/edit', {
+        page: 'Editar Propiedad',
+        csrfToken: req.csrfToken(),
+        categories,
+        prices,
+        data: property
+    });
+
+}
+
+async function postEditProperty(req, res){
+
+    console.log( colors.green('[SUCCESS]: Editando propiedad') );
+
+    await check('title').notEmpty().withMessage('El título es requerido').run(req);
+    await check('description').notEmpty().withMessage('La descripción es requerida').run(req);
+    await check('category').notEmpty().withMessage('La categoría es requerida').run(req);
+    await check('price').notEmpty().withMessage('El precio es requerido').run(req);
+    await check('rooms').notEmpty().withMessage('El número de habitaciones es requerido').run(req);
+    await check('parking').notEmpty().withMessage('El número de parqueos es requerido').run(req);
+    await check('wc').notEmpty().withMessage('El número de baños es requerido').run(req);
+
+    await check('street').notEmpty().withMessage('La dirección es requerida').run(req);
+    await check('latitude').notEmpty().withMessage('La latitud es requerida').run(req);
+    await check('longitude').notEmpty().withMessage('La longitud es requerida').run(req);
+
+    const errors = validationResult(req);
+
+    if(!errors.isEmpty()){
+        const [categories, prices] = await Promise.all([
+            Category.findAll(),
+            Price.findAll()
+        ]);
+
+        return res.render('property/edit', {
+            page: 'Editar Propiedad',
+            csrfToken: req.csrfToken(),
+            categories,
+            prices,
+            errors: errors.array(),
+            data: req.body
+        });
+    }
+
+    const { id } = req.params;
+
+    const property = await Property.findByPk(id);
+
+    if(!property){
+        console.error( colors.red('[DANGER]: La propiedad no existe') );
+        return res.redirect('/');
+    }
+
+    if(property.user_id.toString() !== req.user.id.toString()){
+        console.error( colors.red('[DANGER]: La propiedad no pertenece al usuario') );
+        return res.redirect('/');
+    }
+
+    
+    try{
+        const {title, description, category: category_id, price: price_id, rooms, parking, wc, street, latitude, longitude} = req.body;
+        property.set({
+            title,
+            description,
+            category_id,
+            price_id,
+            rooms,
+            parking,
+            wc,
+            street,
+            latitude,
+            longitude
+        });
+
+        await property.save();
+
+        return res.redirect('/my-properties');
+    }catch(error){
+        console.error( colors.red('[DANGER]: Error al editar la propiedad: ' + error) );
+    }
+   
+}
+
 
 export {
     getSeeMyProperties,
     getCreateProperty,
     postCreateProperty,
     getAddImage,
-    postAddImage
+    postAddImage,
+    getEditProperty,
+    postEditProperty
 }
