@@ -193,7 +193,7 @@ async function postLogin(req, res) {
 
 
 function getLogout(req, res) {
-    res.redirect('/auth/login');
+    res.cookie('_token', '').redirect('/auth/login');
 }
 
 function getForgotPassword(req, res) {

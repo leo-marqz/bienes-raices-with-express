@@ -1,4 +1,4 @@
-import { getSeeMyProperties, getCreateProperty, postCreateProperty, getAddImage,postAddImage,getEditProperty,postEditProperty } from "../controllers/propertyController.js";
+import { getSeeMyProperties, getCreateProperty, postCreateProperty, getAddImage,postAddImage,getEditProperty,postEditProperty, postDeleteProperty } from "../controllers/propertyController.js";
 
 import express from "express";
 import protectPrivateRoutesMiddleware from "../middlewares/protectPrivateRoutes.js";
@@ -21,5 +21,7 @@ router.post('/properties/add-image/:id',
 
 router.get('/properties/edit/:id', protectPrivateRoutesMiddleware, getEditProperty);
 router.post('/properties/edit/:id', protectPrivateRoutesMiddleware, postEditProperty);
+
+router.post('/properties/delete/:id', protectPrivateRoutesMiddleware, postDeleteProperty);
 
 export default router;

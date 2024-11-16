@@ -1,4 +1,5 @@
 import colors from 'picocolors';
+import { unlink } from 'node:fs/promises'
 import { check, validationResult } from 'express-validator';
 
 import { Category, Price, Property } from '../models/index.js';
@@ -17,6 +18,7 @@ async function getSeeMyProperties(req, res) {
 
     res.render('property/admin', {
         page: 'Mis Propiedades',
+        csrfToken: req.csrfToken(),
         properties
     });
 }
@@ -275,6 +277,33 @@ async function postEditProperty(req, res){
    
 }
 
+async function postDeleteProperty(req, res){
+    const { id } = req.params;
+
+    const property = await Property.findByPk(id);
+
+    if(!property){
+        console.error( colors.red('[DANGER]: La propiedad no existe') );
+        return res.redirect('/');
+    }
+
+    if(property.user_id.toString() !== req.user.id.toString()){
+        console.error( colors.red('[DANGER]: La propiedad no pertenece al usuario') );
+        return res.redirect('/');
+    }
+
+    await unlink(`public/uploads/images/${property.image}`);
+
+    console.log( colors.green('[SUCCESS]: Imagen eliminada') );
+
+    await property.destroy();
+
+    console.log( colors.green('[SUCCESS]: Propiedad eliminada') );
+
+    res.redirect('/my-properties');
+
+}
+
 
 export {
     getSeeMyProperties,
@@ -283,5 +312,6 @@ export {
     getAddImage,
     postAddImage,
     getEditProperty,
-    postEditProperty
+    postEditProperty,
+    postDeleteProperty
 }
