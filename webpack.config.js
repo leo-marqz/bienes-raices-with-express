@@ -5,7 +5,8 @@ export default {
     mode: "development",
     entry: {
         map: "./src/js/map.js",
-        add_image: "./src/js/add_image.js"
+        add_image: "./src/js/add_image.js",
+        show_map: "./src/js/show_map.js",
     },
     output: {
         filename: '[name].js',

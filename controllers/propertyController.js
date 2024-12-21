@@ -5,6 +5,8 @@ import { check, validationResult } from 'express-validator';
 import { Category, Price, Property } from '../models/index.js';
 
 async function getSeeMyProperties(req, res) {
+    // QueryString
+    const page = req.query.page || 1; //default page 1
 
     const { id } = req.user;
 
@@ -164,7 +166,7 @@ async function postAddImage(req, res, next) {
         property.published = 1;
         await property.save();
 
-        next(); //continue with the next middleware
+        // next(); //continue with the next middleware
 
     }catch(error){
         console.error( colors.red('[DANGER]: Error al subir la imagen: ' + error) );
@@ -304,6 +306,28 @@ async function postDeleteProperty(req, res){
 
 }
 
+async function getProperty(req, res){
+    const { id } = req.params; //id property
+
+    // verify if the property exists
+    const property = await Property.findByPk(id, {
+        include: [
+            {model: Category, as: 'category'},
+            {model: Price, as: 'price'}
+        ]
+    });
+
+    if(!property){
+        console.error( colors.red('[DANGER]: La propiedad no existe (404)') );
+        return res.redirect('/404');
+    }
+
+    res.render('property/show', {
+        page: property.title,
+        property,
+    });
+}
+
 
 export {
     getSeeMyProperties,
@@ -313,5 +337,6 @@ export {
     postAddImage,
     getEditProperty,
     postEditProperty,
-    postDeleteProperty
+    postDeleteProperty,
+    getProperty
 }
