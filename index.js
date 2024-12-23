@@ -5,6 +5,8 @@ import colors from "picocolors";
 
 import authRouter from "./routes/authRouter.js";
 import propertyRouter from './routes/propertyRouter.js';
+import appRouter from "./routes/appRouter.js";
+import apiRouter from "./routes/apiRouter.js";
 
 import database from "./configurations/database.js";
 
@@ -35,8 +37,10 @@ app.set("views", "./views");
 //Enable static files (css, js, images) to be served from the public folder
 app.use(express.static("public"));
  
+app.use("/", appRouter);
 app.use('/', propertyRouter);
 app.use("/auth", authRouter);
+app.use("/api", apiRouter);
 
 const port = process.env.APP_PORT_BASE || 3000;
 

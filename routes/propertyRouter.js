@@ -6,7 +6,7 @@ import uploadImageMiddleware from "../middlewares/uploadImage.js";
 
 const router = express.Router();
 
-router.get('/', protectPrivateRoutesMiddleware, getSeeMyProperties);
+// router.get('/', protectPrivateRoutesMiddleware, getSeeMyProperties);
 router.get('/my-properties', protectPrivateRoutesMiddleware, getSeeMyProperties);
 
 router.get('/properties/create', protectPrivateRoutesMiddleware, getCreateProperty);

@@ -5,24 +5,52 @@ import { check, validationResult } from 'express-validator';
 import { Category, Price, Property } from '../models/index.js';
 
 async function getSeeMyProperties(req, res) {
-    // QueryString
-    const page = req.query.page || 1; //default page 1
-
     const { id } = req.user;
+    const { page: currentPage } = req.query; 
 
-    const properties = await Property.findAll({ where: { 
-            user_id: id
-        },
-        include: [
-            {model: Category},
-            {model: Price}
-        ]});
+    const expression = /^[1-9]$/ //page => number
 
-    res.render('property/admin', {
-        page: 'Mis Propiedades',
-        csrfToken: req.csrfToken(),
-        properties
-    });
+    if(!expression.test(currentPage)){
+        return res.redirect('/my-properties?page=1');
+    }
+
+    const limit = 2;
+    const offset = ( (currentPage * limit) - limit ); // ( (1 * 2) - 2) = 0. ( (2 * 2) - 2 ) = 5
+
+    try {
+        const [properties, total] = await Promise.all([ //pages=2,5,etc
+            Property.findAll({ 
+                limit: limit, //5
+                offset: offset, //( (1 * 5) - 5) = 0
+                where: { 
+                    user_id: id
+                },
+                include: [
+                    {model: Category},
+                    {model: Price}
+                ]
+            }),
+            Property.count({
+                where: {
+                    user_id: id
+                }
+            })
+        ]);
+
+        res.render('property/admin', {
+            page: 'Mis Propiedades',
+            pages: Math.ceil(total / limit),
+            total: total,
+            offset: offset,
+            limit: limit,
+            currentPage: Number(currentPage),
+            csrfToken: req.csrfToken(),
+            properties: properties,
+        });
+    } catch (error) {
+        console.error( colors.red('[DANGER]: Error al obtener las propiedades: ') );
+    }
+
 }
 
 //view property/create
