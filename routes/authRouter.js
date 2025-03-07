@@ -1,5 +1,8 @@
 import express from "express";
-import { getLogin, getRegister, postLogin, postRegister, getForgotPassword, getLogout, getConfirmAccount, postForgotPassword, postResetPassword, getResetPassword } from "../controllers/authController.js";
+import { 
+    getLogin, getRegister, postLogin, postRegister, getForgotPassword, 
+    getLogout, getConfirmAccount, postForgotPassword, postResetPassword, 
+    getResetPassword } from "../controllers/AuthController.js";
 
 const router = express.Router();
 

@@ -171,19 +171,19 @@ async function postAddImage(req, res, next) {
     //validate if the property exists
     if(!property){
         console.error( colors.red('[DANGER]: La propiedad no existe') );
-        return res.redirect('/');
+        return res.redirect('/my-properties');
     }
 
     //validate if the property is published
     if(property.published){
         console.error( colors.yellow('[DANGER]: La propiedad ya ha sido publicada') );
-        return res.redirect('/');
+        return res.redirect('/my-properties');
     }
 
     //validate if the property belongs to the user
     if(property.user_id.toString() !== req.user.id.toString()){
         console.error( colors.red('[DANGER]:La propiedad no pertenece al usuario') );
-        return res.redirect('/');
+        return res.redirect('/my-properties');
     }
 
     console.log( colors.green('[SUCCESS]: La propiedad es válida') );
@@ -201,7 +201,7 @@ async function postAddImage(req, res, next) {
     }
     console.log( colors.green('[SUCCESS]: Imagen subida') );
     
-    res.redirect('/my-properties');
+    res.redirect('/my-properties'); 
 }
 
 async function getEditProperty(req, res){
@@ -211,12 +211,12 @@ async function getEditProperty(req, res){
 
     if(!property){
         console.error( colors.red('[DANGER]: La propiedad no existe') );
-        return res.redirect('/');
+        return res.redirect('/my-properties');
     }
 
     if(property.user_id.toString() !== req.user.id.toString()){
         console.error( colors.red('[DANGER]: La propiedad no pertenece al usuario') );
-        return res.redirect('/');
+        return res.redirect('/my-properties');
     }
 
     const [categories, prices] = await Promise.all([
@@ -322,7 +322,11 @@ async function postDeleteProperty(req, res){
         return res.redirect('/');
     }
 
-    await unlink(`public/uploads/images/${property.image}`);
+    try{
+        await unlink(`public/uploads/images/${property.image}`);
+    }catch(error){
+        console.log( colors.red('[ERROR]: No se encontro imagen a eliminar') )
+    }
 
     console.log( colors.green('[SUCCESS]: Imagen eliminada') );
 

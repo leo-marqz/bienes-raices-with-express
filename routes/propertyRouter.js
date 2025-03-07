@@ -1,4 +1,7 @@
-import { getSeeMyProperties, getCreateProperty, postCreateProperty, getAddImage,postAddImage,getEditProperty,postEditProperty, postDeleteProperty, getProperty } from "../controllers/propertyController.js";
+import { 
+    getSeeMyProperties, getCreateProperty, postCreateProperty, 
+    getAddImage,postAddImage,getEditProperty,postEditProperty, 
+    postDeleteProperty, getProperty } from "../controllers/PropertyController.js";
 
 import express from "express";
 import protectPrivateRoutesMiddleware from "../middlewares/protectPrivateRoutes.js";

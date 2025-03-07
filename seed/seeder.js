@@ -1,7 +1,7 @@
 
-import categories from "./seedCategory.js";
-import prices from "./seedPrice.js";
-import users from "./seedUser.js";
+import categories from "./SeedCategory.js";
+import prices from "./SeedPrice.js";
+import users from "./SeedUser.js";
 
 import database from "../configurations/database.js";
 

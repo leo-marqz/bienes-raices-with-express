@@ -1,6 +1,6 @@
 import express from "express";
 
-import { getProperties } from "../controllers/apiController.js";
+import { getProperties } from "../controllers/ApiController.js";
 
 const router = express.Router();
 

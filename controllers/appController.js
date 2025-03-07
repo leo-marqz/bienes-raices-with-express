@@ -1,7 +1,11 @@
 
 async function home(req, res) {
+
+  const { id } = req.user ?? "";
+
   res.render("home", {
     page: "Inicio",
+    user_id: id
   });
 }
 
