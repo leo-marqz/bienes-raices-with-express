@@ -19,7 +19,7 @@ router.post("/forgot-password", postForgotPassword); //send email with instructi
 router.get('/reset-password/:token', getResetPassword); //form to reset password
 router.post('/reset-password/:token', postResetPassword); //reset password
 
-router.get('/confirm-account/:token', getConfirmAccount); //confirm account
+router.get('/confirm-account/:token', getConfirmAccount); //confirm account - form  
 
 router.get("/logout", getLogout); //logout
 
